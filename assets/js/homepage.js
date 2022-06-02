@@ -6,7 +6,7 @@ var repoContainerEl = document.getElementById("repos-container");
 
 var repoSearchTerm = document.getElementById("repo-search-term");
 
-var formSubmitHandler = function(event){
+var formSubmitHandler = function (event) {
     event.preventDefault();
     //get value from input element
     var username = nameInputEl.value.trim();
@@ -18,33 +18,39 @@ var formSubmitHandler = function(event){
     else {
         alert("Please enter a GitHub username");
     }
-    
+
 };
 
 var getUserRepos = function (user) {
-    
+
     //format the github api url
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
     //fetch returns a Promise
     //.then executes whatever is in the parentheses when the Promise is fulfilled
-    fetch(apiUrl).then(function(response) {
-        if (response.ok) {
+    fetch(apiUrl)
+        .then(function (response) {
+            // if request was successful
+            if (response.ok) {
 
-            //the .json() method returns another promise
-        //.then will execute whenever the promise is fulfilled
-            response.json().then(function(data) {
-                displayRepos(data,user);
-            });
+                //the .json() method returns another promise
+                //.then will execute whenever the promise is fulfilled
+                response.json().then(function (data) {
+                    displayRepos(data, user);
+                });
 
-        }else{
-            alert("Error: GitHub User Not Found");
-        }
-       
-    });
+            } else {
+                alert("Error: GitHub User Not Found");
+            }
+
+        })
+        .catch(function (error) {
+            //this catch method is chained to the .then() method
+            alert("Unable to connect to GitHub");
+        });
 };
 
-var displayRepos = function(repos,searchTerm) {
+var displayRepos = function (repos, searchTerm) {
     //check if API returned any repos
     if (repos.length === 0) {
         repoContainerEl.textContent = "No repositories found";
@@ -76,9 +82,9 @@ var displayRepos = function(repos,searchTerm) {
         statusEl.classList = "flex-row align-center";
 
         //check if current repo has issues or not
-        if (repos[i].open_issues_count > 0 ) {
-            statusEl.innerHTML = 
-            "<i class='fas fa-times status-icon icon-danger'></i>"+repos[i].open_issues_count + " issue(s)";
+        if (repos[i].open_issues_count > 0) {
+            statusEl.innerHTML =
+                "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
         }
         else {
             statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
