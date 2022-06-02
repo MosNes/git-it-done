@@ -1,3 +1,19 @@
+var getRepoName = function() {
+    //gets the ?repo=repo/name string from the URL
+var queryString = document.location.search;
+
+//splits the string at '=' and grabs 'repo/name'
+var repoName = queryString.split("=")[1];
+
+getRepoIssues(repoName);
+
+//displays repo name at the top of the page
+var repoNameEl = document.getElementById("repo-name");
+repoNameEl.textContent = repoName;
+
+};
+
+
 var issueContainerEl = document.getElementById("issues-container");
 
 var limitWarningEl = document.getElementById("limit-warning");
@@ -77,4 +93,4 @@ var displayWarning = function(repo) {
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues("facebook/react");
+getRepoName();
