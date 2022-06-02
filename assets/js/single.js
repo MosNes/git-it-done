@@ -5,11 +5,19 @@ var queryString = document.location.search;
 //splits the string at '=' and grabs 'repo/name'
 var repoName = queryString.split("=")[1];
 
-getRepoIssues(repoName);
-
-//displays repo name at the top of the page
+//selects container that will hold the repo name on the top of the page
 var repoNameEl = document.getElementById("repo-name");
-repoNameEl.textContent = repoName;
+
+if (repoName){
+    //adds the repo name to the top of the page
+    repoNameEl.textContent = repoName;
+    //calls function to display all the issues associated with the repo
+    getRepoIssues(repoName);
+}
+//if query string not valid, redirect back to the home page
+else{
+    document.location.replace("./index.html");
+}
 
 };
 
@@ -34,7 +42,8 @@ var getRepoIssues = function (repo) {
                 }
             });
         } else {
-            alert("There was a problem with your request!");
+            //if not successful, redirect to home page
+            document.location.replace("./index.html");
         }
     });
 };
