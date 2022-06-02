@@ -45,6 +45,12 @@ var getUserRepos = function (user) {
 };
 
 var displayRepos = function(repos,searchTerm) {
+    //check if API returned any repos
+    if (repos.length === 0) {
+        repoContainerEl.textContent = "No repositories found";
+        return;
+    }
+
     //clear old content
     repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm;
